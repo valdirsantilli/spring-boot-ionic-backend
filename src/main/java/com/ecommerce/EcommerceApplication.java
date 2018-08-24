@@ -1,6 +1,5 @@
 package com.ecommerce;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
