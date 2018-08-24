@@ -1,5 +1,7 @@
 package com.ecommerce;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,13 +14,20 @@ import com.ecommerce.domain.Cidade;
 import com.ecommerce.domain.Cliente;
 import com.ecommerce.domain.Endereco;
 import com.ecommerce.domain.Estado;
+import com.ecommerce.domain.Pagamento;
+import com.ecommerce.domain.PagamentoComBoleto;
+import com.ecommerce.domain.PagamentoComCartao;
+import com.ecommerce.domain.Pedido;
 import com.ecommerce.domain.Produto;
+import com.ecommerce.domain.enums.EstadoPagamento;
 import com.ecommerce.domain.enums.TipoCliente;
 import com.ecommerce.repositories.CategoriaRepository;
 import com.ecommerce.repositories.CidadeRepository;
 import com.ecommerce.repositories.ClienteRepository;
 import com.ecommerce.repositories.EnderecoRepository;
 import com.ecommerce.repositories.EstadoRepository;
+import com.ecommerce.repositories.PagamentoRepository;
+import com.ecommerce.repositories.PedidoRepository;
 import com.ecommerce.repositories.ProdutoRepository;
 
 @SpringBootApplication
@@ -41,6 +50,12 @@ public class EcommerceApplication implements CommandLineRunner{
 	
 	@Autowired
 	private EnderecoRepository enderecoRepository;
+	
+	@Autowired
+	private PedidoRepository pedidoRepository;
+
+	@Autowired
+	private PagamentoRepository pagamentoRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(EcommerceApplication.class, args);
@@ -89,5 +104,20 @@ public class EcommerceApplication implements CommandLineRunner{
 		
 		clienteRepository.saveAll(Arrays.asList(cli1));
 		enderecoRepository.saveAll(Arrays.asList(e1, e2));
+		
+		
+		Pedido ped1 = new Pedido(null, LocalDateTime.of(2017, 9, 30, 10, 32), cli1, e1);
+		Pedido ped2 = new Pedido(null, LocalDateTime.of(2017, 10, 10, 19, 35), cli1, e2);
+		
+		Pagamento pag1 = new PagamentoComCartao(null, EstadoPagamento.QUITADO, ped1, 6);		
+		ped1.setPagamento(pag1);
+		
+		Pagamento pag2 = new PagamentoComBoleto(null, EstadoPagamento.PENDENTE, ped2, LocalDate.of(2017, 10, 20), null);
+		ped2.setPagamento(pag2);
+		
+		cli1.getPedidos().addAll(Arrays.asList(ped1, ped2));
+		
+		pedidoRepository.saveAll(Arrays.asList(ped1, ped2));
+		pagamentoRepository.saveAll(Arrays.asList(pag1, pag2));
 	}
 }
