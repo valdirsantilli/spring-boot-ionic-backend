@@ -7,6 +7,9 @@ import javax.validation.constraints.NotEmpty;
 
 import org.hibernate.validator.constraints.Length;
 
+import com.ecommerce.services.validation.ClienteInsert;
+
+@ClienteInsert
 public class ClienteNewDTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -20,15 +23,27 @@ public class ClienteNewDTO implements Serializable {
 	public String email;
 	
 	private String cpfCnpj;
+	
 	private Integer tipo;
+	
+	@NotEmpty(message="Preenchimento obirgatório")
 	private String logradouro;
+
+	@NotEmpty(message="Preenchimento obirgatório")
 	private String numero;
+	
 	private String complemento;
+	
 	private String bairro;
+	
+	@NotEmpty(message="Preenchimento obirgatório")
 	private String cep;
 
+	@NotEmpty(message="Preenchimento obirgatório")
 	private String telefone;
+	
 	private String telefone2;
+	
 	private String telefone3;
 	
 	private Integer cidadeId;
