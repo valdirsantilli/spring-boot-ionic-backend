@@ -1,8 +1,11 @@
 package com.ecommerce.domain;
 
 import java.io.Serializable;
+import java.text.NumberFormat;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -16,7 +19,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 public class Pedido implements Serializable{
@@ -134,4 +136,27 @@ public class Pedido implements Serializable{
 			return false;
 		return true;
 	}	
+	
+	@Override
+	public String toString() {
+		NumberFormat nf = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+		StringBuilder builder = new StringBuilder();
+		builder.append("Pedido Numero: ");
+		builder.append(getId());
+		builder.append(", Instante: ");
+		builder.append(getInstante().format(formatter));
+		builder.append(", Cliente: ");
+		builder.append(getCliente().getNome());
+		builder.append(", Situação do Pagamento: ");
+		builder.append(getPagamento().getEstado().getDescricao());
+		builder.append("\nDetalhes:\n");
+		for (ItemPedido itemPedido : itens) {
+			builder.append(itemPedido.toString());
+		}
+		builder.append("Valor Total: ");
+		builder.append(nf.format(getValorTotal()));
+		return builder.toString();
+	}
 }
