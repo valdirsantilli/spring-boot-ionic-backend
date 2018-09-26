@@ -9,7 +9,7 @@ import com.ecommerce.domain.PagamentoComCartao;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Configuration
-	public class JacksonConfig {
+public class JacksonConfig {
 	
 	@Bean
 	public Jackson2ObjectMapperBuilder objectMapperBuilder() { 
